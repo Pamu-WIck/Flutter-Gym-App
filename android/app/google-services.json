@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "993674131374",
+    "project_id": "jailfitness-3f9f4",
+    "storage_bucket": "jailfitness-3f9f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993674131374:android:ce230a8879524eae44fa3f",
+        "android_client_info": {
+          "package_name": "com.example.jail_fitness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993674131374-3gr9c4o356c9soc65osb4tvepnuk1di7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3uETnvHgKCEdHmBZg5OFfGIxZT-4P3IQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993674131374-3gr9c4o356c9soc65osb4tvepnuk1di7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
