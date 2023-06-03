@@ -9,11 +9,22 @@ import 'package:jail_fitness/util/home_page_card.dart';
 import 'package:jail_fitness/util/home_tile.dart';
 import 'package:jail_fitness/auth.dart';
 import 'dailyActivity.dart';
+import 'package:jail_fitness/userData.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   final User? user = Auth().currentUser;
+  //get user id from uth
+  String userID = Auth().currentUser!.uid;
+  String username = '';
+
+  Future<String> fetchUsername() async {
+    String userID = Auth().currentUser!.uid;
+    UserService userService = UserService();
+    UserModel user = await userService.getUser(userID);
+    return user.username;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,24 +99,40 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildGreeting() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Hello ${user?.email ?? 'User'}!',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-            )),
-        Text(
-          '23 Jan, 2021',
-          style: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
+    return FutureBuilder<String>(
+      future: fetchUsername(),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        String greeting = 'Loading...';
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            greeting = 'Error: ${snapshot.error}';
+          } else {
+            greeting = 'Hello ${snapshot.data ?? 'User'}';
+          }
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              greeting,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Text(
+              '23 Jan, 2021',
+              style: TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
