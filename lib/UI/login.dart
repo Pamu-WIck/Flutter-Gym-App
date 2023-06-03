@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jail_fitness/auth.dart';
-import 'package:jail_fitness/pages/home_page.dart';
+import 'package:jail_fitness/ui/home_page.dart';
 
 class loginUI extends StatefulWidget {
   const loginUI({Key? key}) : super(key: key);
@@ -15,6 +15,42 @@ class _LoginUIState extends State<loginUI> {
   final _auth = Auth();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  String? errorMessage = '';
+  bool isLogin = true;
+
+  Future<void> signInWithEmailAndPassword() async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
+      });
+    }
+  }
+
+  Future<void> createUserWithEmailAndPassword() async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +78,7 @@ class _LoginUIState extends State<loginUI> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                      BorderSide(color: Colors.white), // Set border color to white
+                      borderSide: BorderSide(color: Colors.white),
                     ),
                     labelText: 'Email',
                     hintText: 'Enter valid email id',
@@ -54,20 +89,24 @@ class _LoginUIState extends State<loginUI> {
 
                 //password textfield
                 SizedBox(height: 20),
-
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                      BorderSide(color: Colors.white), // Set border color to white
+                      borderSide: BorderSide(color: Colors.white),
                     ),
                     labelText: 'Password',
                     hintText: 'Enter secure password',
                     labelStyle: TextStyle(color: Colors.white),
                     hintStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
                   ),
+                ),
+
+                SizedBox(height: 10),
+                Text(
+                  errorMessage ?? '',
+                  style: TextStyle(color: Colors.red, fontSize: 14),
                 ),
 
                 //login button with #AE6FF2 and #795EF1 gradient
@@ -87,29 +126,30 @@ class _LoginUIState extends State<loginUI> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextButton(
-                    onPressed: () async {
-                      try {
-                        await _auth.signInWithEmailAndPassword(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        );
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
-                      } catch (e) {
-                        print(e);
-                        // Handle errors here.
-                      }
-                    },
+                    onPressed: isLogin
+                        ? signInWithEmailAndPassword
+                        : createUserWithEmailAndPassword,
                     child: Text(
-                      'Login',
+                      isLogin ? 'Login' : 'Register',
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ),
                 ),
 
-                // The rest of your widgets go here...
+                SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isLogin = !isLogin;
+                    });
+                  },
+                  child: Text(
+                    isLogin
+                        ? 'Need an account? Register'
+                        : 'Already have an account? Login',
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
               ],
             ),
           ),
