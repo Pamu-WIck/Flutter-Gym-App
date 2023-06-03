@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jail_fitness/auth.dart';
 import 'package:jail_fitness/pages/home_page.dart';
 import 'package:jail_fitness/pages/login_register_page.dart';
+import 'package:jail_fitness/UI/login.dart';
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _WidgetTreeState extends State<WidgetTree> {
         if (snapshot.hasData){
           return HomePage();
         } else {
-          return LoginPage();
+          return loginUI();
         }
       }
     );
