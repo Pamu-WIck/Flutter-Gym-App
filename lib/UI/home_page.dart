@@ -146,7 +146,7 @@ class HomePage extends StatelessWidget {
               'subtitle': 'Your Daily Progress of Workout',
               'icon': FontAwesomeIcons.chartGantt,
               'color': Colors.purple,
-              'screen': progress(),
+              'screen': progressUi(),
             },
             {
               'title': 'Daily Routine',
