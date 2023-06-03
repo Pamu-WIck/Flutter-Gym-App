@@ -2,8 +2,10 @@
     package="com.example.jail_fitness">
    <application
         android:label="jail_fitness"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+       android:name="androidx.multidex.MultiDexApplication"
+        android:icon="@mipmap/ic_launcher"
+       >
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

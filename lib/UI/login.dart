@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jail_fitness/auth.dart';
 import 'package:jail_fitness/ui/home_page.dart';
+import 'package:jail_fitness/UI/getUserData.dart';
 
 class loginUI extends StatefulWidget {
   const loginUI({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class _LoginUIState extends State<loginUI> {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => UserForm()),
       );
     } catch (e) {
       setState(() {
