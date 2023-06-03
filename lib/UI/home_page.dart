@@ -7,7 +7,7 @@ import 'package:jail_fitness/UI/progress.dart';
 import 'package:jail_fitness/res/colors.dart';
 import 'package:jail_fitness/util/home_page_card.dart';
 import 'package:jail_fitness/util/home_tile.dart';
-import '../auth.dart';
+import 'package:jail_fitness/auth.dart';
 import 'dailyActivity.dart';
 
 class HomePage extends StatelessWidget {

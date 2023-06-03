@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../UI//home_page.dart';
 
 class UserForm extends StatefulWidget {
   @override
@@ -23,6 +24,11 @@ class UserFormState extends State<UserForm> {
         'age': _age,
         'weight': _weight,
       });
+      // Navigate to HomePage after successful addition
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     } else {
       // Handle the case when there's no logged-in user
       print('No user is logged in');
