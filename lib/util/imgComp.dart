@@ -3,45 +3,50 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_compare_slider/image_compare_slider.dart';
 
 class imgCompare extends StatelessWidget {
-  final String itemTwoImagePath;
   final String userId;
 
-  const imgCompare({Key? key, required this.itemTwoImagePath, required this.userId}) : super(key: key);
+  Future<List<String?>> getImageUrls(String userId) async {
+    final ref1 = FirebaseStorage.instance.ref('uploads/$userId/1.jpg');
+    final ref2 = FirebaseStorage.instance.ref('uploads/$userId/2.jpg');
+    final url1 = await ref1.getDownloadURL();
+    final url2 = await ref2.getDownloadURL().catchError((error) {
+      // Return the default image URL if the second image doesn't exist
+      return FirebaseStorage.instance.ref('uploads/default/default.jpg').getDownloadURL();
+    });
+    return [url1, url2];
+  }
+
+  const imgCompare({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: getImageUrl(userId),
+    return FutureBuilder<List<String?>>(
+      future: getImageUrls(userId),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          String itemOneImagePath = snapshot.data!;
+          final List<String?> imageUrls = snapshot.data!;
 
           return Card(
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 return Container(
                   width: constraints.maxWidth,
-                  height: 250,
+                  height: 400,
                   child: ImageCompareSlider(
                     dividerWidth: 2,
-                    itemOne: Image.network(itemOneImagePath, width: 300),
-                    itemTwo: Image(image: AssetImage(itemTwoImagePath), width: 300),
+                    itemOne: Image.network(imageUrls[0]!, width: 400),
+                    itemTwo: Image.network(imageUrls[1]!, width: 400),
                   ),
                 );
               },
             ),
           );
         } else if (snapshot.hasError) {
-          return Text('Error loading image');
+          return Text('Error loading images');
         } else {
           return CircularProgressIndicator();
         }
       },
     );
-  }
-
-  Future<String> getImageUrl(String userId) async {
-    final ref = FirebaseStorage.instance.ref('uploads/$userId/1.jpg');
-    return await ref.getDownloadURL();
   }
 }
