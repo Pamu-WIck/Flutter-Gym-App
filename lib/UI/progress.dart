@@ -8,6 +8,8 @@ import 'package:jail_fitness/util/imgComp.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:intl/intl.dart';
 import '../auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class progressUi extends StatefulWidget {
   const progressUi({Key? key}) : super(key: key);
@@ -41,7 +43,7 @@ class _progressUiState extends State<progressUi> {
             children: [
 
 
-              //imgcompare() card
+              // imgcompare() card
               SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -97,29 +99,18 @@ class _progressUiState extends State<progressUi> {
                 ),
               ),
 
-              //gap
               SizedBox(height: 10),
 
-              //text view that change after submit
-              //get current value of number picker
-              Text(
-                '$_currentValue',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+              //chart card
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ProgressChart(
+                    userId: user!.uid,
+                  ),
                 ),
-              ),
 
-              //today date text view
-              Text(
-                getCurrentDate(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              )
             ],
           ),
         )));
