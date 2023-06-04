@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import '../UI//home_page.dart';
 
 class ImageUpload extends StatefulWidget {
   @override
@@ -25,9 +27,19 @@ class _ImageUploadState extends State<ImageUpload> {
         }
 
         try {
+          // Get image from gallery
+          final pickedFile = await ImagePicker().pickImage(
+            source: ImageSource.gallery,
+          );
+
+          if (pickedFile == null) {
+            print('No image selected.');
+            return;
+          }
+
           // Load the image
-          final byteData = await rootBundle.load('assets/images/1.jpg');
-          final imageData = byteData.buffer.asUint8List();
+          final File file = File(pickedFile.path);
+          final imageData = await file.readAsBytes();
 
           // Create a reference
           final ref = FirebaseStorage.instance.ref('uploads/${user.uid}/1.jpg');
@@ -39,6 +51,12 @@ class _ImageUploadState extends State<ImageUpload> {
           final downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
           print('Image uploaded: $downloadUrl');
+
+          // Navigate to HomePage after successful upload
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
         } catch (e) {
           print('Failed to upload image: $e');
         }
