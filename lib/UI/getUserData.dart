@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../UI//home_page.dart';
+import '../UI/userImage.dart';
 
 class UserForm extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class UserFormState extends State<UserForm> {
       // Navigate to HomePage after successful addition
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => ImageUpload()),
       );
     } else {
       // Handle the case when there's no logged-in user
