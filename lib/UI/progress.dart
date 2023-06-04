@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import '../auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../util/ImageUploader.dart';
+
 
 class progressUi extends StatefulWidget {
   const progressUi({Key? key}) : super(key: key);
@@ -79,7 +81,9 @@ class _progressUiState extends State<progressUi> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await ImageUploader.uploadImage(2);
+
                       // Save the selected weight and current date to Firestore
                       _firestore.collection('weights').add({
                         'userID': user!.uid,
