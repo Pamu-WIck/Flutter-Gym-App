@@ -21,6 +21,9 @@ class _progressUiState extends State<progressUi> {
   final _firestore = FirebaseFirestore.instance;
   int _currentValue = 70;
 
+  String imageOne = 'assets/images/1.jpg';
+  String imageTwo = 'assets/images/2.jpg';
+
   String getCurrentDate() {
     var now = DateTime.now();
     var formatter = DateFormat('dd/MM/yyyy'); // Format as "Month day"
@@ -36,47 +39,16 @@ class _progressUiState extends State<progressUi> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              //text title align to top
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //back button
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                  ),
 
-                  Text(
-                    'Progress',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  //empty icon
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.transparent,
-                    ),
-                  ),
-                ],
-              ),
 
               //imgcompare() card
               SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(20),
-                child: imgCompare(),
+                child: imgCompare(
+                  itemOneImagePath: imageOne,
+                    itemTwoImagePath: imageTwo,
+                ),
               ),
 
               SizedBox(height: 10),

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:image_compare_slider/image_compare_slider.dart';
 
 class imgCompare extends StatelessWidget {
-  const imgCompare({Key? key}) : super(key: key);
+  final String itemOneImagePath;
+  final String itemTwoImagePath;
+
+  const imgCompare({Key? key, required this.itemOneImagePath, required this.itemTwoImagePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +17,8 @@ class imgCompare extends StatelessWidget {
             height: 250,
             child: ImageCompareSlider(
               dividerWidth: 2,
-              itemOne:
-                  const Image(image: AssetImage('assets/images/1.jpg'), width: 300),
-              itemTwo:
-                  Image(image: AssetImage('assets/images/2.jpg'), width: 300),
+              itemOne: Image(image: AssetImage(itemOneImagePath), width: 300),
+              itemTwo: Image(image: AssetImage(itemTwoImagePath), width: 300),
             ),
           );
         },
