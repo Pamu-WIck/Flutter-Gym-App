@@ -48,8 +48,8 @@ class _progressUiState extends State<progressUi> {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: imgCompare(
-                  itemOneImagePath: imageOne,
                     itemTwoImagePath: imageTwo,
+                    userId: user!.uid
                 ),
               ),
 
