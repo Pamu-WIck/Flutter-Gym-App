@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../util/customerTable.dart';
+import '../util/AdminUpgrade.dart';
 
 class CustomerTable extends StatefulWidget {
   @override
@@ -20,6 +22,19 @@ class _CustomerTableState extends State<CustomerTable> {
   Future<List<Customer>> _getCustomers() async {
     QuerySnapshot customerSnapshot = await FirebaseFirestore.instance.collection('users').get();
     return customerSnapshot.docs.map((doc) => Customer.fromDocumentSnapshot(doc)).toList();
+  }
+
+  void _handleAdminUpgrade(String uid, bool isAdmin) async {
+    if (isAdmin) {
+      await AdminUpgrade.downgradeUserToNormal(uid);
+    } else {
+      await AdminUpgrade.upgradeUserToAdmin(uid);
+    }
+
+    setState(() {
+      // Refresh the customer list after the upgrade/downgrade
+      _customerListFuture = _getCustomers();
+    });
   }
 
   @override
@@ -51,21 +66,25 @@ class _CustomerTableState extends State<CustomerTable> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        customer.isAdmin == true ? 'Admin' : 'User',
+                        customer.paidStatus ? 'Paid' : 'Not Paid',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
-                      Text(
-                        customer.paidStatus == true ? 'Paid' : 'Not Paid',
-                        style: TextStyle(
-                          color: Colors.white,
+                      GestureDetector(
+                        onTap: () => _handleAdminUpgrade(customer.uid, customer.isAdmin ?? false),
+                        child: Icon(
+                          customer.isAdmin == true ? FontAwesomeIcons.checkCircle : FontAwesomeIcons.circle,
+                          color: customer.isAdmin == true ? Colors.green : Colors.grey,
+                          size: 16,
                         ),
                       ),
+
+
                     ],
                   ),
                   children: [
