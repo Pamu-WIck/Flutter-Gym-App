@@ -170,7 +170,7 @@ class HomePage extends StatelessWidget {
               'subtitle': 'Your Daily Progress of Workout',
               'icon': Icons.people,
               'color': Colors.green,
-              'screen': ManageCustomer(),
+              'screen': CustomerTable(),
             },
           ]),
         ],
