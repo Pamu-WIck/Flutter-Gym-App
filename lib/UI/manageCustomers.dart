@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../util/customerTable.dart';
 import '../util/AdminUpgrade.dart';
+import '../util/disableUserAccount.dart';
 
 class CustomerTable extends StatefulWidget {
   @override
@@ -35,6 +36,12 @@ class _CustomerTableState extends State<CustomerTable> {
       // Refresh the customer list after the upgrade/downgrade
       _customerListFuture = _getCustomers();
     });
+  }
+
+  void _disableUserAccount(String uid) {
+    // Call the function to disable the user account
+    // Pass the uid of the customer whose account needs to be disabled
+    disableUserAccount(uid);
   }
 
   @override
@@ -83,8 +90,6 @@ class _CustomerTableState extends State<CustomerTable> {
                           size: 16,
                         ),
                       ),
-
-
                     ],
                   ),
                   children: [
@@ -107,6 +112,20 @@ class _CustomerTableState extends State<CustomerTable> {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () => _disableUserAccount(customer.uid),
+                      icon: Icon(
+                        Icons.block,
+                        color: Colors.red,
+                      ),
+                      label: Text(
+                        'Disable Account',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
                       ),
                     ),
                   ],
