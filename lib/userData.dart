@@ -5,12 +5,14 @@ class UserModel {
   final String username;
   final int age;
   final double weight;
+  bool admin; // Update the field to be mutable
 
   UserModel({
     required this.uid,
     required this.username,
     required this.age,
-    required this.weight
+    required this.weight,
+    required this.admin,
   });
 
   factory UserModel.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
@@ -19,6 +21,7 @@ class UserModel {
       username: documentSnapshot.get('username'),
       age: documentSnapshot.get('age'),
       weight: documentSnapshot.get('weight'),
+      admin: documentSnapshot.get('admin') ?? false,
     );
   }
 }
@@ -30,14 +33,4 @@ class UserService {
     DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(uid).get();
     return UserModel.fromDocumentSnapshot(userSnapshot);
   }
-
-  Future<List<UserModel>> getAllUsers() async {
-    QuerySnapshot userSnapshot = await _firestore.collection('users').get();
-    return userSnapshot.docs.map((doc) => UserModel.fromDocumentSnapshot(doc)).toList();
-  }
-
 }
-
-
-
-

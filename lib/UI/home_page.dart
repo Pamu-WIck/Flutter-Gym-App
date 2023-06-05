@@ -20,12 +20,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final User? user = Auth().currentUser;
 
   //get user id from uth
   String userID = Auth().currentUser!.uid;
   String username = '';
+  late bool isAdmin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchIsAdmin();
+  }
+
+  Future<void> _fetchIsAdmin() async {
+    bool isAdminResult = await fetchIsAdmin();
+    setState(() {
+      isAdmin = isAdminResult;
+    });
+  }
 
   Future<String> fetchUsername() async {
     String userID = Auth().currentUser!.uid;
@@ -33,6 +46,17 @@ class _HomePageState extends State<HomePage> {
     UserModel user = await userService.getUser(userID);
     return user.username;
   }
+
+  // get user isAdmin
+  Future<bool> fetchIsAdmin() async {
+    String userID = Auth().currentUser!.uid;
+    UserService userService = UserService();
+    UserModel user = await userService.getUser(userID);
+    return user.admin;
+  }
+
+  //assaing fetchIsAdmin to isAdmin
+
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +136,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-
       ],
     );
   }
@@ -157,25 +180,25 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildTiles(BuildContext context) {
     return Expanded(
-      child: ListView(
-        children: [
-          _buildTileRow(context, [
-            {
-              'title': 'Working Progress',
-              'subtitle': 'Your Daily Progress of Workout',
-              'icon': FontAwesomeIcons.chartGantt,
-              'color': Colors.purple,
-              'screen': progressUi(),
-            },
-            {
-              'title': 'Daily Routine',
-              'subtitle': 'Your Daily Routine of Workout',
-              'icon': Icons.access_time,
-              'color': Colors.blue,
-              'screen': DailyRoutine(),
-            },
-          ]),
-          const SizedBox(height: 20),
+      child: ListView(children: [
+        _buildTileRow(context, [
+          {
+            'title': 'Working Progress',
+            'subtitle': 'Your Daily Progress of Workout',
+            'icon': FontAwesomeIcons.chartGantt,
+            'color': Colors.purple,
+            'screen': progressUi(),
+          },
+          {
+            'title': 'Daily Routine',
+            'subtitle': 'Your Daily Routine of Workout',
+            'icon': Icons.access_time,
+            'color': Colors.blue,
+            'screen': DailyRoutine(),
+          },
+        ]),
+        const SizedBox(height: 20),
+        if (isAdmin) ...[
           _buildTileRow(context, [
             {
               'title': 'Payment Details',
@@ -193,12 +216,12 @@ class _HomePageState extends State<HomePage> {
             },
           ]),
         ],
-      ),
+      ]),
     );
   }
 
-  Widget _buildTileRow(BuildContext context,
-      List<Map<String, dynamic>> tilesData) {
+  Widget _buildTileRow(
+      BuildContext context, List<Map<String, dynamic>> tilesData) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: tilesData.map((tileData) {
@@ -218,5 +241,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
