@@ -10,11 +10,19 @@ import 'package:jail_fitness/util/home_tile.dart';
 import 'package:jail_fitness/auth.dart';
 import 'dailyActivity.dart';
 import 'package:jail_fitness/userData.dart';
+import 'package:jail_fitness/pages/home_page.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
 
   final User? user = Auth().currentUser;
+
   //get user id from uth
   String userID = Auth().currentUser!.uid;
   String username = '';
@@ -86,14 +94,25 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+
+        //circle avatara that navigate to logout page
         CircleAvatar(
-          radius: 18,
-          child: Icon(
-            FontAwesomeIcons.userDoctor,
-            color: Colors.white,
-            size: 20,
+          backgroundColor: Colors.white,
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LogOut()),
+              );
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.black,
+              size: 20,
+            ),
           ),
         ),
+
       ],
     );
   }
@@ -178,7 +197,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildTileRow(BuildContext context, List<Map<String, dynamic>> tilesData) {
+  Widget _buildTileRow(BuildContext context,
+      List<Map<String, dynamic>> tilesData) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: tilesData.map((tileData) {
@@ -198,3 +218,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
