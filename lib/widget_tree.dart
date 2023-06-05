@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jail_fitness/auth.dart';
-import 'package:jail_fitness/pages/home_page.dart';
+import 'package:jail_fitness/UI/home_page.dart';
 import 'package:jail_fitness/UI/login.dart';
 
 class WidgetTree extends StatefulWidget {
@@ -17,7 +17,7 @@ class _WidgetTreeState extends State<WidgetTree> {
       stream: Auth().authStateChanges,
       builder: (context, snapshot){
         if (snapshot.hasData){
-          return LogOut();
+          return HomePage();
         } else {
           return loginUI();
         }

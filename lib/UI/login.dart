@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,16 +27,49 @@ class _LoginUIState extends State<loginUI> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+
+      User? firebaseUser = _auth.currentUser;
+      if (firebaseUser == null) {
+        setState(() {
+          errorMessage = "Sign in failed.";
+        });
+        return;
+      }
+
+      // Retrieve the user document from Firestore
+      DocumentSnapshot userDocSnapshot = await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).get();
+
+      if (!userDocSnapshot.exists) {
+        // Handle the case where the user document does not exist in your Firestore collection
+        setState(() {
+          errorMessage = "No user record found in the database.";
+        });
+        return;
+      }
+
+      Map<String, dynamic> userDoc = userDocSnapshot.data() as Map<String, dynamic>;
+
+      // Check if the user is disabled
+      if (userDoc['disabled'] == true) {
+        setState(() {
+          errorMessage = "This account has been disabled.";
+        });
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
     } catch (e) {
       setState(() {
         errorMessage = e.toString();
       });
     }
   }
+
+
+
+
 
   Future<void> createUserWithEmailAndPassword() async {
     try {
