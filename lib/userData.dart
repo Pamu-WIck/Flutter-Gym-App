@@ -30,6 +30,12 @@ class UserService {
     DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(uid).get();
     return UserModel.fromDocumentSnapshot(userSnapshot);
   }
+
+  Future<List<UserModel>> getAllUsers() async {
+    QuerySnapshot userSnapshot = await _firestore.collection('users').get();
+    return userSnapshot.docs.map((doc) => UserModel.fromDocumentSnapshot(doc)).toList();
+  }
+
 }
 
 
