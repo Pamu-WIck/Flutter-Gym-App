@@ -3,23 +3,15 @@ import 'package:jail_fitness/res/colors.dart';
 
 import 'home_page.dart';
 
-void main() {
-  runApp(DailyRoutine());
-}
 
-class DailyRoutine extends StatelessWidget {
+class DailyRoutine extends StatefulWidget {
+  const DailyRoutine({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-
-      home: dailyActivity(),
-    );
-  }
+  State<DailyRoutine> createState() => _DailyRoutineState();
 }
 
-class dailyActivity extends StatelessWidget {
-  const dailyActivity({Key? key}) : super(key: key);
-
+class _DailyRoutineState extends State<DailyRoutine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
