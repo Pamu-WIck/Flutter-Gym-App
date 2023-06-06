@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
               'subtitle': 'Your Daily Progress of Workout',
               'icon': Icons.payment,
               'color': Colors.orange,
-              'screen': payment(),
+              'screen': PaymentTable(),
             },
             {
               'title': 'Manage Customers',
