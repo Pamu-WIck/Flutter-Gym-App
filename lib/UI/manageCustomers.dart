@@ -21,8 +21,11 @@ class _CustomerTableState extends State<CustomerTable> {
   }
 
   Future<List<Customer>> _getCustomers() async {
-    QuerySnapshot customerSnapshot = await FirebaseFirestore.instance.collection('users').get();
-    return customerSnapshot.docs.map((doc) => Customer.fromDocumentSnapshot(doc)).toList();
+    QuerySnapshot customerSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+    return customerSnapshot.docs
+        .map((doc) => Customer.fromDocumentSnapshot(doc))
+        .toList();
   }
 
   void _handleAdminUpgrade(String uid, bool isAdmin) async {
@@ -60,7 +63,8 @@ class _CustomerTableState extends State<CustomerTable> {
             itemBuilder: (context, index) {
               final customer = customers[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                 child: ExpansionTileCard(
                   colorCurve: Curves.easeIn,
                   baseColor: Color(0xff282D3B),
@@ -83,10 +87,15 @@ class _CustomerTableState extends State<CustomerTable> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _handleAdminUpgrade(customer.uid, customer.isAdmin ?? false),
+                        onTap: () => _handleAdminUpgrade(
+                            customer.uid, customer.isAdmin ?? false),
                         child: Icon(
-                          customer.isAdmin == true ? FontAwesomeIcons.checkCircle : FontAwesomeIcons.circle,
-                          color: customer.isAdmin == true ? Colors.green : Colors.grey,
+                          customer.isAdmin == true
+                              ? FontAwesomeIcons.checkCircle
+                              : FontAwesomeIcons.circle,
+                          color: customer.isAdmin == true
+                              ? Colors.green
+                              : Colors.grey,
                           size: 16,
                         ),
                       ),

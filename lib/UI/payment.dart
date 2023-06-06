@@ -22,12 +22,16 @@ class _PaymentTableState extends State<PaymentTable> {
   }
 
   Future<List<Customer>> _getCustomers() async {
-    QuerySnapshot customerSnapshot = await FirebaseFirestore.instance.collection('users').get();
-    return customerSnapshot.docs.map((doc) => Customer.fromDocumentSnapshot(doc)).toList();
+    QuerySnapshot customerSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+    return customerSnapshot.docs
+        .map((doc) => Customer.fromDocumentSnapshot(doc))
+        .toList();
   }
 
   void _handlePaymentStatusUpdate(String uid, bool paidStatus) async {
-    await ManagePayment.updatePaymentStatus(uid, !paidStatus); // Toggle payment status
+    await ManagePayment.updatePaymentStatus(
+        uid, !paidStatus); // Toggle payment status
     setState(() {
       // Refresh the customer list after the payment status update
       _customerListFuture = _getCustomers();
@@ -50,7 +54,8 @@ class _PaymentTableState extends State<PaymentTable> {
             itemBuilder: (context, index) {
               final customer = customers[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                 child: ExpansionTileCard(
                   colorCurve: Curves.easeIn,
                   baseColor: Color(0xff282D3B),
@@ -64,10 +69,15 @@ class _PaymentTableState extends State<PaymentTable> {
                     ),
                   ),
                   subtitle: GestureDetector(
-                    onTap: () => _handlePaymentStatusUpdate(customer.uid, customer.paidStatus ?? false),
+                    onTap: () => _handlePaymentStatusUpdate(
+                        customer.uid, customer.paidStatus ?? false),
                     child: Icon(
-                      customer.paidStatus == true ? FontAwesomeIcons.checkCircle : FontAwesomeIcons.circle,
-                      color: customer.paidStatus == true ? Colors.green : Colors.grey,
+                      customer.paidStatus == true
+                          ? FontAwesomeIcons.checkCircle
+                          : FontAwesomeIcons.circle,
+                      color: customer.paidStatus == true
+                          ? Colors.green
+                          : Colors.grey,
                       size: 16,
                     ),
                   ),

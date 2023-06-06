@@ -37,7 +37,10 @@ class _LoginUIState extends State<loginUI> {
       }
 
       // Retrieve the user document from Firestore
-      DocumentSnapshot userDocSnapshot = await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).get();
+      DocumentSnapshot userDocSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(firebaseUser.uid)
+          .get();
 
       if (!userDocSnapshot.exists) {
         // Handle the case where the user document does not exist in your Firestore collection
@@ -47,7 +50,8 @@ class _LoginUIState extends State<loginUI> {
         return;
       }
 
-      Map<String, dynamic> userDoc = userDocSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> userDoc =
+          userDocSnapshot.data() as Map<String, dynamic>;
 
       // Check if the user is disabled
       if (userDoc['disabled'] == true) {
@@ -66,10 +70,6 @@ class _LoginUIState extends State<loginUI> {
       });
     }
   }
-
-
-
-
 
   Future<void> createUserWithEmailAndPassword() async {
     try {

@@ -36,7 +36,6 @@ class ProgressChart extends StatelessWidget {
           String dateString = doc['date'] as String;
           DateTime date = DateFormat('dd/MM/yyyy').parse(dateString);
 
-
           spots.add(FlSpot(spots.length.toDouble(), weight));
         });
 

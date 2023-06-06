@@ -27,7 +27,7 @@ class _MealTableState extends State<MealTable> {
 
   Future<List<Customer>> _getCustomers() async {
     QuerySnapshot customerSnapshot =
-    await FirebaseFirestore.instance.collection('users').get();
+        await FirebaseFirestore.instance.collection('users').get();
     return customerSnapshot.docs
         .map((doc) => Customer.fromDocumentSnapshot(doc))
         .toList();
@@ -53,8 +53,7 @@ class _MealTableState extends State<MealTable> {
       String lunch = _lunchController.text;
       String dinner = _dinnerController.text;
 
-      _mealService.addMeal(uid, breakfast, lunch, dinner)
-          .then((_) {
+      _mealService.addMeal(uid, breakfast, lunch, dinner).then((_) {
         // Meal plan added successfully
         // Clear the text fields
         _breakfastController.clear();
@@ -65,8 +64,7 @@ class _MealTableState extends State<MealTable> {
             content: Text('Meal plan submitted successfully.'),
           ),
         );
-      })
-          .catchError((error) {
+      }).catchError((error) {
         // Error occurred while adding meal plan
         // Handle the error or show an error message
         print('Error adding meal plan: $error');
@@ -103,7 +101,8 @@ class _MealTableState extends State<MealTable> {
             itemBuilder: (context, index) {
               final customer = customers[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                 child: ExpansionTileCard(
                   colorCurve: Curves.easeIn,
                   baseColor: Color(0xff282D3B),
@@ -126,10 +125,15 @@ class _MealTableState extends State<MealTable> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _handleAdminUpgrade(customer.uid, customer.isAdmin ?? false),
+                        onTap: () => _handleAdminUpgrade(
+                            customer.uid, customer.isAdmin ?? false),
                         child: Icon(
-                          customer.isAdmin == true ? FontAwesomeIcons.checkCircle : FontAwesomeIcons.circle,
-                          color: customer.isAdmin == true ? Colors.green : Colors.grey,
+                          customer.isAdmin == true
+                              ? FontAwesomeIcons.checkCircle
+                              : FontAwesomeIcons.circle,
+                          color: customer.isAdmin == true
+                              ? Colors.green
+                              : Colors.grey,
                           size: 16,
                         ),
                       ),
@@ -153,7 +157,8 @@ class _MealTableState extends State<MealTable> {
                             SizedBox(height: 10),
                             TextFormField(
                               controller: _breakfastController,
-                              style: TextStyle(color: Colors.white), // Set text color
+                              style: TextStyle(
+                                  color: Colors.white), // Set text color
                               decoration: InputDecoration(
                                 labelText: 'Breakfast',
                                 labelStyle: TextStyle(color: Colors.white),
@@ -174,7 +179,8 @@ class _MealTableState extends State<MealTable> {
                             SizedBox(height: 10),
                             TextFormField(
                               controller: _lunchController,
-                              style: TextStyle(color: Colors.white), // Set text color
+                              style: TextStyle(
+                                  color: Colors.white), // Set text color
                               decoration: InputDecoration(
                                 labelText: 'Lunch',
                                 labelStyle: TextStyle(color: Colors.white),
@@ -195,7 +201,8 @@ class _MealTableState extends State<MealTable> {
                             SizedBox(height: 10),
                             TextFormField(
                               controller: _dinnerController,
-                              style: TextStyle(color: Colors.white), // Set text color
+                              style: TextStyle(
+                                  color: Colors.white), // Set text color
                               decoration: InputDecoration(
                                 labelText: 'Dinner',
                                 labelStyle: TextStyle(color: Colors.white),

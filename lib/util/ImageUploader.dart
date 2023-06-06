@@ -31,7 +31,8 @@ class ImageUploader {
       final imageData = await file.readAsBytes();
 
       // Create a reference
-      final ref = FirebaseStorage.instance.ref('uploads/${user.uid}/$fileNumber.jpg');
+      final ref =
+          FirebaseStorage.instance.ref('uploads/${user.uid}/$fileNumber.jpg');
 
       // Upload the image
       final taskSnapshot = await ref.putData(imageData);

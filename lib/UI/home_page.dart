@@ -215,9 +215,7 @@ class _HomePageState extends State<HomePage> {
               'screen': CustomerTable(),
             },
           ]),
-
           const SizedBox(height: 20),
-
           _buildTileRow(context, [
             {
               'title': 'Manage Meals',

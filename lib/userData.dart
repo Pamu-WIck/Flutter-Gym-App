@@ -30,7 +30,8 @@ class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<UserModel> getUser(String uid) async {
-    DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(uid).get();
+    DocumentSnapshot userSnapshot =
+        await _firestore.collection('users').doc(uid).get();
     return UserModel.fromDocumentSnapshot(userSnapshot);
   }
 }

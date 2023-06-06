@@ -11,7 +11,9 @@ class imgCompare extends StatelessWidget {
     final url1 = await ref1.getDownloadURL();
     final url2 = await ref2.getDownloadURL().catchError((error) {
       // Return the default image URL if the second image doesn't exist
-      return FirebaseStorage.instance.ref('uploads/default/default.jpg').getDownloadURL();
+      return FirebaseStorage.instance
+          .ref('uploads/default/default.jpg')
+          .getDownloadURL();
     });
     return [url1, url2];
   }

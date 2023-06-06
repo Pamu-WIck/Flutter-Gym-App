@@ -15,6 +15,3 @@ class AdminUpgrade {
     });
   }
 }
-
-
-

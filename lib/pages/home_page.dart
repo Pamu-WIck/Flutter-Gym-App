@@ -10,7 +10,8 @@ class LogOut extends StatelessWidget {
 
   Future<void> signOut(BuildContext context) async {
     await Auth().signOut();
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => loginUI())); // navigates to LoginUI
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => loginUI())); // navigates to LoginUI
   }
 
   Widget _title() {
@@ -44,9 +45,7 @@ class LogOut extends StatelessWidget {
               children: <Widget>[
                 _userUid(),
                 _SignOutButton(context),
-              ]
-          ),
-        )
-    );
+              ]),
+        ));
   }
 }

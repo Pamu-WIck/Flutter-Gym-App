@@ -27,7 +27,8 @@ class _DailyRoutineState extends State<DailyRoutine> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(); // Show loading spinner while waiting for data
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Show error if there is any
+            return Text(
+                'Error: ${snapshot.error}'); // Show error if there is any
           } else if (snapshot.hasData) {
             return Column(
               children: [
@@ -48,7 +49,8 @@ class _DailyRoutineState extends State<DailyRoutine> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          buildMealRow('Breakfast', snapshot.data!['breakfast']),
+                          buildMealRow(
+                              'Breakfast', snapshot.data!['breakfast']),
                           SizedBox(height: 10),
                           buildMealRow('Lunch', snapshot.data!['lunch']),
                           SizedBox(height: 10),
@@ -62,7 +64,8 @@ class _DailyRoutineState extends State<DailyRoutine> {
               ],
             );
           } else {
-            return Text('No meal data found for the user'); // Show a message when no data is found
+            return Text(
+                'No meal data found for the user'); // Show a message when no data is found
           }
         },
       ),

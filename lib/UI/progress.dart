@@ -12,7 +12,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../util/ImageUploader.dart';
 
-
 class progressUi extends StatefulWidget {
   const progressUi({Key? key}) : super(key: key);
 
@@ -43,15 +42,11 @@ class _progressUiState extends State<progressUi> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-
-
               // imgcompare() card
               SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(20),
-                child: imgCompare(
-                    userId: user!.uid
-                ),
+                child: imgCompare(userId: user!.uid),
               ),
 
               SizedBox(height: 10),
@@ -112,7 +107,6 @@ class _progressUiState extends State<progressUi> {
                     userId: user!.uid,
                   ),
                 ),
-
               )
             ],
           ),
