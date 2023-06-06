@@ -11,6 +11,7 @@ import 'package:jail_fitness/auth.dart';
 import 'dailyActivity.dart';
 import 'package:jail_fitness/userData.dart';
 import 'package:jail_fitness/pages/home_page.dart';
+import 'package:jail_fitness/UI/addMealPlan.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -56,7 +57,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   //assaing fetchIsAdmin to isAdmin
-
 
   @override
   Widget build(BuildContext context) {
@@ -215,6 +215,18 @@ class _HomePageState extends State<HomePage> {
               'screen': CustomerTable(),
             },
           ]),
+
+          const SizedBox(height: 20),
+
+          _buildTileRow(context, [
+            {
+              'title': 'Manage Meals',
+              'subtitle': 'Add meals to the system',
+              'icon': Icons.food_bank,
+              'color': Colors.orange,
+              'screen': MealTable(),
+            },
+          ])
         ],
       ]),
     );
