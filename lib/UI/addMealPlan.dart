@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../util/customerTable.dart';
 import '../util/AdminUpgrade.dart';
+import '../util/MealService.dart';
 
 class MealTable extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class MealTable extends StatefulWidget {
 
 class _MealTableState extends State<MealTable> {
   late Future<List<Customer>> _customerListFuture;
+  final MealService _mealService = MealService();
   final _formKey = GlobalKey<FormState>();
   TextEditingController _breakfastController = TextEditingController();
   TextEditingController _lunchController = TextEditingController();
@@ -24,8 +26,11 @@ class _MealTableState extends State<MealTable> {
   }
 
   Future<List<Customer>> _getCustomers() async {
-    QuerySnapshot customerSnapshot = await FirebaseFirestore.instance.collection('users').get();
-    return customerSnapshot.docs.map((doc) => Customer.fromDocumentSnapshot(doc)).toList();
+    QuerySnapshot customerSnapshot =
+    await FirebaseFirestore.instance.collection('users').get();
+    return customerSnapshot.docs
+        .map((doc) => Customer.fromDocumentSnapshot(doc))
+        .toList();
   }
 
   void _handleAdminUpgrade(String uid, bool isAdmin) async {
@@ -48,14 +53,38 @@ class _MealTableState extends State<MealTable> {
       String lunch = _lunchController.text;
       String dinner = _dinnerController.text;
 
-      // TODO: Implement the logic to submit meals for the user
-      // You can perform the submission logic here using the meal values
-
-      // Clear the text fields
-      _breakfastController.clear();
-      _lunchController.clear();
-      _dinnerController.clear();
+      _mealService.addMeal(uid, breakfast, lunch, dinner)
+          .then((_) {
+        // Meal plan added successfully
+        // Clear the text fields
+        _breakfastController.clear();
+        _lunchController.clear();
+        _dinnerController.clear();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Meal plan submitted successfully.'),
+          ),
+        );
+      })
+          .catchError((error) {
+        // Error occurred while adding meal plan
+        // Handle the error or show an error message
+        print('Error adding meal plan: $error');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to submit meal plan. Please try again.'),
+          ),
+        );
+      });
     }
+  }
+
+  @override
+  void dispose() {
+    _breakfastController.dispose();
+    _lunchController.dispose();
+    _dinnerController.dispose();
+    super.dispose();
   }
 
   @override
