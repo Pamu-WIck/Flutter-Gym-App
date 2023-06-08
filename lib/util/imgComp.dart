@@ -29,6 +29,9 @@ class imgCompare extends StatelessWidget {
           final List<String?> imageUrls = snapshot.data!;
 
           return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 return Container(

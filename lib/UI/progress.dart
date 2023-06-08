@@ -9,7 +9,6 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:intl/intl.dart';
 import '../auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import '../util/ImageUploader.dart';
 
 class progressUi extends StatefulWidget {
@@ -26,6 +25,8 @@ class _progressUiState extends State<progressUi> {
 
   String imageOne = 'assets/images/1.jpg';
   String imageTwo = 'assets/images/2.jpg';
+
+  String? lastWeightDocumentId;
 
   String getCurrentDate() {
     var now = DateTime.now();
@@ -51,54 +52,83 @@ class _progressUiState extends State<progressUi> {
 
               SizedBox(height: 10),
 
-              Row(
-                children: [
-                  NumberPicker(
-                    value: _currentValue,
-                    minValue: 0,
-                    maxValue: 150,
-                    step: 1,
-                    onChanged: (value) => setState(() => _currentValue = value),
-                  ),
+              //crud card
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    NumberPicker(
+                      value: _currentValue,
+                      minValue: 0,
+                      maxValue: 150,
+                      step: 1,
+                      onChanged: (value) => setState(() => _currentValue = value),
+                    ),
 
-                  //number picker submit button
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: Container(
-                      width: 100,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xffAE6FF2),
-                            Color(0xff795EF1),
-                          ],
+                    //number picker submit button
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Container(
+                        width: 100,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xffAE6FF2),
+                              Color(0xff795EF1),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: TextButton(
-                        onPressed: () async {
-                          await ImageUploader.uploadImage(2);
+                        child: TextButton(
+                          onPressed: () async {
+                            await ImageUploader.uploadImage(2);
 
-                          // Save the selected weight and current date to Firestore
-                          _firestore.collection('weights').add({
-                            'userID': user!.uid,
-                            'weight': _currentValue,
-                            'date': getCurrentDate(),
-                          });
-                        },
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+                            // Save the selected weight and current date to Firestore
+                            _firestore.collection('weights').add({
+                              'userID': user!.uid,
+                              'weight': _currentValue,
+                              'date': getCurrentDate(),
+                            });
+                          },
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () async {
+                        // Directly refer to the file path when deleting the image
+                        await FirebaseStorage.instance.ref('uploads/${user!.uid}/2.jpg').delete();
+
+                        if (lastWeightDocumentId != null) {
+                          final snapshot = await _firestore
+                              .collection('weights')
+                              .where('userID', isEqualTo: user!.uid)
+                              .orderBy('date', descending: true)
+                              .limit(1)
+                              .get();
+
+                          final doc = snapshot.docs.first;
+                          await _firestore.collection('weights').doc(doc.id).delete();
+
+                        }
+
+                        setState(() {
+                          lastWeightDocumentId = null;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
 
               SizedBox(height: 10),
