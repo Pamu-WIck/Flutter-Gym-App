@@ -16,7 +16,7 @@ class ProgressChart extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection('weights')
           .where('userID', isEqualTo: userId)
-          .orderBy('date', descending: true)
+          .orderBy('date', descending: false)
           .limit(8)
           .snapshots(),
       builder: (context, snapshot) {
@@ -28,15 +28,35 @@ class ProgressChart extends StatelessWidget {
           return CircularProgressIndicator();
         }
 
-        List<FlSpot> spots = [];
+        List<BarChartGroupData> groupData = [];
+        double maxWeight = 0;
 
-        snapshot.data!.docs.forEach((doc) {
+        snapshot.data!.docs.skip(1).forEach((doc) {
           double weight = doc['weight'].toDouble();
-          // Assuming your date field is stored as a String
+          if (weight > maxWeight) {
+            maxWeight = weight;
+          }
+
           String dateString = doc['date'] as String;
           DateTime date = DateFormat('dd/MM/yyyy').parse(dateString);
 
-          spots.add(FlSpot(spots.length.toDouble(), weight));
+          groupData.add(BarChartGroupData(
+            x: date.day.toInt(),
+            barRods: [
+              BarChartRodData(
+                toY: weight,
+                color: Color(0xffAE6FF2),
+                width: 8,
+                borderRadius: BorderRadius.circular(4),
+                backDrawRodData: BackgroundBarChartRodData(
+                  show: true,
+                  fromY: 0,
+                  toY: maxWeight,
+                  color: Color(0xffAE6FF2).withOpacity(0.1),
+                ),
+              ),
+            ],
+          ));
         });
 
         return MaterialApp(
@@ -45,21 +65,33 @@ class ProgressChart extends StatelessWidget {
           home: Scaffold(
             backgroundColor: AppColors.primaryColor,
             body: Center(
-              child: LineChart(
-                LineChartData(
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: spots,
-                      isCurved: true,
-                      color: Color(0xffAE6FF2),
-                      barWidth: 3,
-                      dotData: FlDotData(show: false),
+              child: BarChart(
+                BarChartData(
+                  barGroups: groupData,
+                  titlesData: FlTitlesData(
+                    show : true,
+                  ),
+
+                  gridData: FlGridData(
+                    show: true,
+                    //show only horizontal lines
+                    checkToShowVerticalLine: (value) => false,
+                    //show only left titles
+
+                    checkToShowHorizontalLine: (value) => value % 5 == 0,
+                    getDrawingHorizontalLine: (value) => FlLine(
+                      //gray horizontal lines with opacity 0.1
+                      color: Color(0xffAE6FF2).withOpacity(0.3),
+
+                      strokeWidth: 0.5,
                     ),
-                  ],
-                  titlesData: FlTitlesData(show: true),
-                  gridData: FlGridData(show: true),
-                  borderData: FlBorderData(show: true),
-                  lineTouchData: LineTouchData(enabled: false),
+                  ),
+                  borderData: FlBorderData(
+                    show: false,
+                  ),
+                  barTouchData: BarTouchData(
+                    enabled: true,
+                  ),
                   backgroundColor: AppColors.primaryColor,
                 ),
                 swapAnimationDuration: Duration(milliseconds: 150),
