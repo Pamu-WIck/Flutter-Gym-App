@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jail_fitness/UI/home_page.dart';
 import 'package:jail_fitness/res/colors.dart';
-import 'package:jail_fitness/util/chartUi.dart';
-import 'package:jail_fitness/util/imgComp.dart';
+import 'package:jail_fitness/widgets/chartUi.dart';
+import 'package:jail_fitness/widgets/imgComp.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:intl/intl.dart';
 import '../auth.dart';
@@ -104,7 +104,8 @@ class _progressUiState extends State<progressUi> {
                     ),
 
                     IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: Icon(Icons.delete,
+                      color: AppColors.textColor),
                       onPressed: () async {
                         // Directly refer to the file path when deleting the image
                         await FirebaseStorage.instance.ref('uploads/${user!.uid}/2.jpg').delete();

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../util/customerTable.dart';
+import '../widgets/customerTable.dart';
 import '../util/managePayment.dart';
 
 class PaymentTable extends StatefulWidget {

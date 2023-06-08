@@ -29,22 +29,28 @@ class imgCompare extends StatelessWidget {
         if (snapshot.hasData) {
           final List<String?> imageUrls = snapshot.data!;
 
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return Container(
-                  width: constraints.maxWidth,
-                  height: 348,
-                  child: ImageCompareSlider(
-                    dividerWidth: 2,
-                    itemOne: Image.network(imageUrls[0]!, width: 500),
-                    itemTwo: Image.network(imageUrls[1]!, width: 500),
-                  ),
-                );
-              },
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    return Container(
+                      width: constraints.maxWidth,
+                      height: 348,
+                      child: ImageCompareSlider(
+                        dividerWidth: 2,
+                        itemOne: Image.network(imageUrls[0]!, width: 500),
+                        itemTwo: Image.network(imageUrls[1]!, width: 500),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
           );
         } else if (snapshot.hasError) {

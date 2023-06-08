@@ -5,12 +5,12 @@ import 'package:jail_fitness/UI/manageCustomers.dart';
 import 'package:jail_fitness/UI/payment.dart';
 import 'package:jail_fitness/UI/progress.dart';
 import 'package:jail_fitness/res/colors.dart';
-import 'package:jail_fitness/util/home_page_card.dart';
-import 'package:jail_fitness/util/home_tile.dart';
+import 'package:jail_fitness/widgets/home_page_card.dart';
+import 'package:jail_fitness/widgets/home_tile.dart';
 import 'package:jail_fitness/auth.dart';
 import 'dailyActivity.dart';
-import 'package:jail_fitness/userData.dart';
-import 'package:jail_fitness/pages/home_page.dart';
+import 'package:jail_fitness/util/userData.dart';
+import 'package:jail_fitness/widgets/home_page.dart';
 import 'package:jail_fitness/UI/addMealPlan.dart';
 
 class HomePage extends StatefulWidget {
