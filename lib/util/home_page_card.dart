@@ -1,93 +1,105 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import '../res/colors.dart';
 
-class HomeCard extends StatelessWidget {
-  const HomeCard({super.key});
-
+class OverlappingImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color.fromARGB(255, 183, 107, 214),
-            Color.fromARGB(255, 106, 52, 232),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            //add column to the row
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //Monthly Subscription
-                // ignore: prefer_const_constructors
-                Text(
-                  'Monthly Subscription',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w100,
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 80),
+            width: MediaQuery.of(context).size.width,
+            height: 150,
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 30.0),
+                child: Card(
+                  color: Colors.transparent,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.gradientStartColor,
+                            AppColors.gradientEndColor,
+                          ],
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Monthly Subscription',
+                              style: TextStyle(
+                                color: AppColors.textColor,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w100,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'PAID',
+                              style: TextStyle(
+                                color: AppColors.textColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            SizedBox(height: 15),
+                            Text(
+                              'Next training day',
+                              style: TextStyle(
+                                color: AppColors.textColor,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w100,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              '25 Jan, 2021',
+                              style: TextStyle(
+                                color: AppColors.textColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-
-                SizedBox(height: 5),
-
-                //Paid Status
-                Text(
-                  'PAID',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-
-                SizedBox(height: 10),
-
-                SizedBox(height: 15),
-
-                //add text to the column Next training day
-                Text(
-                  'Next training day',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w100,
-                  ),
-                ),
-
-                SizedBox(height: 5),
-
-                //add text to the column
-                Text(
-                  '25 Jan, 2021',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+              ),
             ),
-
-            //add emoticon image to the row
-            Image.asset(
+          ),
+          Positioned(
+            top: -4,
+            right: -10,
+            child: Image.asset(
               'assets/images/Figure.png',
-              height: 200,
-              width: 200,
+              width: 230,
+              height: 230,
+              fit: BoxFit.contain,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

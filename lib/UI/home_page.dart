@@ -23,7 +23,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final User? user = Auth().currentUser;
 
-  //get user id from uth
   String userID = Auth().currentUser!.uid;
   String username = '';
   late bool isAdmin = false;
@@ -48,15 +47,12 @@ class _HomePageState extends State<HomePage> {
     return user.username;
   }
 
-  // get user isAdmin
   Future<bool> fetchIsAdmin() async {
     String userID = Auth().currentUser!.uid;
     UserService userService = UserService();
     UserModel user = await userService.getUser(userID);
     return user.admin;
   }
-
-  //assaing fetchIsAdmin to isAdmin
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +85,7 @@ class _HomePageState extends State<HomePage> {
           _buildHeader(),
           const SizedBox(height: 20),
           _buildGreeting(),
-          const SizedBox(height: 20),
-          HomeCard(),
+          OverlappingImageCard(),
           const SizedBox(height: 20),
           _buildTiles(context),
         ],
@@ -118,18 +113,16 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-
-        //circle avatara that navigate to logout page
-        CircleAvatar(
-          backgroundColor: Colors.white,
-          child: IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LogOut()),
-              );
-            },
-            icon: const Icon(
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LogOut()),
+            );
+          },
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Icon(
               Icons.logout,
               color: Colors.black,
               size: 20,
@@ -167,7 +160,7 @@ class _HomePageState extends State<HomePage> {
             Text(
               '23 Jan, 2021',
               style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: AppColors.textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -180,58 +173,71 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildTiles(BuildContext context) {
     return Expanded(
-      child: ListView(children: [
-        _buildTileRow(context, [
-          {
-            'title': 'Working Progress',
-            'subtitle': 'Your Daily Progress of Workout',
-            'icon': FontAwesomeIcons.chartGantt,
-            'color': Colors.purple,
-            'screen': progressUi(),
-          },
-          {
-            'title': 'Daily Routine',
-            'subtitle': 'Your Daily Routine of Workout',
-            'icon': Icons.access_time,
-            'color': Colors.blue,
-            'screen': DailyRoutine(),
-          },
-        ]),
-        const SizedBox(height: 20),
-        if (isAdmin) ...[
-          _buildTileRow(context, [
-            {
-              'title': 'Payment Details',
-              'subtitle': 'Your Daily Progress of Workout',
-              'icon': Icons.payment,
-              'color': Colors.orange,
-              'screen': PaymentTable(),
-            },
-            {
-              'title': 'Manage Customers',
-              'subtitle': 'Your Daily Progress of Workout',
-              'icon': Icons.people,
-              'color': Colors.green,
-              'screen': CustomerTable(),
-            },
-          ]),
+      child: ListView(
+        children: [
+          _buildTileRow(
+            context,
+            [
+              {
+                'title': 'Working Progress',
+                'subtitle': 'Your Daily Progress of Workout',
+                'icon': FontAwesomeIcons.chartGantt,
+                'color': Colors.purple,
+                'screen': progressUi(),
+              },
+              {
+                'title': 'Daily Routine',
+                'subtitle': 'Your Daily Routine of Workout',
+                'icon': Icons.access_time,
+                'color': Colors.blue,
+                'screen': DailyRoutine(),
+              },
+            ],
+          ),
           const SizedBox(height: 20),
-          _buildTileRow(context, [
-            {
-              'title': 'Manage Meals',
-              'subtitle': 'Add meals to the system',
-              'icon': Icons.food_bank,
-              'color': Colors.orange,
-              'screen': MealTable(),
-            },
-          ])
+          if (isAdmin) ...[
+            _buildTileRow(
+              context,
+              [
+                {
+                  'title': 'Payment Details',
+                  'subtitle': 'Your Daily Progress of Workout',
+                  'icon': Icons.payment,
+                  'color': Colors.orange,
+                  'screen': PaymentTable(),
+                },
+                {
+                  'title': 'Manage Customers',
+                  'subtitle': 'Your Daily Progress of Workout',
+                  'icon': Icons.people,
+                  'color': Colors.green,
+                  'screen': CustomerTable(),
+                },
+              ],
+            ),
+            const SizedBox(height: 20),
+            _buildTileRow(
+              context,
+              [
+                {
+                  'title': 'Manage Meals',
+                  'subtitle': 'Add meals to the system',
+                  'icon': Icons.food_bank,
+                  'color': Colors.orange,
+                  'screen': MealTable(),
+                },
+              ],
+            )
+          ],
         ],
-      ]),
+      ),
     );
   }
 
   Widget _buildTileRow(
-      BuildContext context, List<Map<String, dynamic>> tilesData) {
+      BuildContext context,
+      List<Map<String, dynamic>> tilesData,
+      ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: tilesData.map((tileData) {
