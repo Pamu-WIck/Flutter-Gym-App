@@ -51,50 +51,54 @@ class _progressUiState extends State<progressUi> {
 
               SizedBox(height: 10),
 
-              NumberPicker(
-                value: _currentValue,
-                minValue: 0,
-                maxValue: 150,
-                step: 1,
-                onChanged: (value) => setState(() => _currentValue = value),
-              ),
-
-              //number picker submit button
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Container(
-                  width: 100,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xffAE6FF2),
-                        Color(0xff795EF1),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(10),
+              Row(
+                children: [
+                  NumberPicker(
+                    value: _currentValue,
+                    minValue: 0,
+                    maxValue: 150,
+                    step: 1,
+                    onChanged: (value) => setState(() => _currentValue = value),
                   ),
-                  child: TextButton(
-                    onPressed: () async {
-                      await ImageUploader.uploadImage(2);
 
-                      // Save the selected weight and current date to Firestore
-                      _firestore.collection('weights').add({
-                        'userID': user!.uid,
-                        'weight': _currentValue,
-                        'date': getCurrentDate(),
-                      });
-                    },
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
+                  //number picker submit button
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Container(
+                      width: 100,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xffAE6FF2),
+                            Color(0xff795EF1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextButton(
+                        onPressed: () async {
+                          await ImageUploader.uploadImage(2);
+
+                          // Save the selected weight and current date to Firestore
+                          _firestore.collection('weights').add({
+                            'userID': user!.uid,
+                            'weight': _currentValue,
+                            'date': getCurrentDate(),
+                          });
+                        },
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
 
               SizedBox(height: 10),

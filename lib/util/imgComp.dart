@@ -33,11 +33,11 @@ class imgCompare extends StatelessWidget {
               builder: (BuildContext context, BoxConstraints constraints) {
                 return Container(
                   width: constraints.maxWidth,
-                  height: 400,
+                  height: 348,
                   child: ImageCompareSlider(
                     dividerWidth: 2,
-                    itemOne: Image.network(imageUrls[0]!, width: 400),
-                    itemTwo: Image.network(imageUrls[1]!, width: 400),
+                    itemOne: Image.network(imageUrls[0]!, width: 500),
+                    itemTwo: Image.network(imageUrls[1]!, width: 500),
                   ),
                 );
               },
