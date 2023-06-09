@@ -23,7 +23,8 @@ class UserFormState extends State<UserForm> {
         'username': _username,
         'age': _age,
         'weight': _weight,
-        'admin': false,  // Add this line to include admin field
+        'admin': false,
+        'paidStatus' : false,// Add this line to include admin field
       });
       // Navigate to HomePage after successful addition
       Navigator.pushReplacement(
