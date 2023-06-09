@@ -27,7 +27,9 @@ class MealService {
           .get();
 
       if (mealSnapshot.docs.isEmpty) {
-        return {}; // return an empty map if no meals found
+        return {
+          'message': 'No meals',
+        }; // return a map with a message if no meals found or if user does not exist
       } else {
         return mealSnapshot.docs.first.data() as Map<String, dynamic>;
       }

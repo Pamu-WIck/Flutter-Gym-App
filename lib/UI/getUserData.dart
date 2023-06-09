@@ -23,6 +23,7 @@ class UserFormState extends State<UserForm> {
         'username': _username,
         'age': _age,
         'weight': _weight,
+        'admin': false,  // Add this line to include admin field
       });
       // Navigate to HomePage after successful addition
       Navigator.pushReplacement(
@@ -41,57 +42,60 @@ class UserFormState extends State<UserForm> {
       appBar: AppBar(
         title: Text('User Form'),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Username'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your username';
-                }
-                _username = value;
-                return null;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Age'),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your age';
-                }
-                _age = int.tryParse(value) ?? 0;
-                if (_age <= 0) {
-                  return 'Please enter a valid age';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Weight'),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your weight';
-                }
-                _weight = double.tryParse(value) ?? 0.0;
-                if (_weight <= 0) {
-                  return 'Please enter a valid weight';
-                }
-                return null;
-              },
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  addUserToFirestore();
-                }
-              },
-              child: Text('Submit'),
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Username'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your username';
+                  }
+                  _username = value;
+                  return null;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Age'),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your age';
+                  }
+                  _age = int.tryParse(value) ?? 0;
+                  if (_age <= 0) {
+                    return 'Please enter a valid age';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Weight'),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your weight';
+                  }
+                  _weight = double.tryParse(value) ?? 0.0;
+                  if (_weight <= 0) {
+                    return 'Please enter a valid weight';
+                  }
+                  return null;
+                },
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    addUserToFirestore();
+                  }
+                },
+                child: Text('Submit'),
+              ),
+            ],
+          ),
         ),
       ),
     );

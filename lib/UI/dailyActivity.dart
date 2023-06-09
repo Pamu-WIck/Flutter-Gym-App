@@ -27,48 +27,67 @@ class _DailyRoutineState extends State<DailyRoutine> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(); // Show loading spinner while waiting for data
           } else if (snapshot.hasError) {
-            return Text(
-                'Error: ${snapshot.error}'); // Show error if there is any
+            return Text('Error: ${snapshot.error}'); // Show error if there is any
           } else if (snapshot.hasData) {
-            return Column(
-              children: [
-                SizedBox(height: 20),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Meal Plan',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          buildMealRow(
-                              'Breakfast', snapshot.data!['breakfast']),
-                          SizedBox(height: 10),
-                          buildMealRow('Lunch', snapshot.data!['lunch']),
-                          SizedBox(height: 10),
-                          buildMealRow('Dinner', snapshot.data!['dinner']),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                  ],
+            if (snapshot.data!.containsKey('message')) {
+              return Center(
+                child: Text(
+                  'No meals',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ],
-            );
+              ); // Show 'No meals' message when no meal data is found
+            } else {
+              return Column(
+                children: [
+                  SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Meal Plan',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            buildMealRow(
+                                'Breakfast', snapshot.data!['breakfast']),
+                            SizedBox(height: 10),
+                            buildMealRow('Lunch', snapshot.data!['lunch']),
+                            SizedBox(height: 10),
+                            buildMealRow('Dinner', snapshot.data!['dinner']),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ],
+              );
+            }
           } else {
             return Text(
-                'No meal data found for the user'); // Show a message when no data is found
+              'No meal data found for the user',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ); // Show a message when no data is found
           }
         },
       ),
+
     );
   }
 

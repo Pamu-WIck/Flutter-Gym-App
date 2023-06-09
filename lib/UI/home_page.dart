@@ -10,7 +10,7 @@ import 'package:jail_fitness/widgets/home_tile.dart';
 import 'package:jail_fitness/auth.dart';
 import 'dailyActivity.dart';
 import 'package:jail_fitness/util/userData.dart';
-import 'package:jail_fitness/widgets/home_page.dart';
+import 'package:jail_fitness/widgets/logout.dart';
 import 'package:jail_fitness/UI/addMealPlan.dart';
 
 class HomePage extends StatefulWidget {
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
           _buildHeader(),
           const SizedBox(height: 20),
           _buildGreeting(),
-          OverlappingImageCard(),
+          OverlappingImageCard(userId: userID,),
           const SizedBox(height: 20),
           _buildTiles(context),
         ],
@@ -97,14 +97,7 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-            size: 20,
-          ),
-        ),
+        Container(width: 48), // Placeholder for the hidden IconButton
         Text(
           'Home',
           style: TextStyle(
@@ -132,6 +125,7 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
+
 
   Widget _buildGreeting() {
     return FutureBuilder<String>(
