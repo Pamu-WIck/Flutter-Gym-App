@@ -38,4 +38,21 @@ class MealService {
       throw e;
     }
   }
+
+  Future<void> resetMeals() async {
+    try {
+      // Get all the meal documents
+      QuerySnapshot mealSnapshot = await _firestore.collection('meals').get();
+
+      // Delete each meal document
+      for (var doc in mealSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      print('Meals reset successfully.');
+    } catch (e) {
+      print('Error resetting meals: $e');
+      throw e;
+    }
+  }
 }

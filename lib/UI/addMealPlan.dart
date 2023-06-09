@@ -62,6 +62,49 @@ class _MealTableState extends State<MealTable> {
     }
   }
 
+  void _resetMeals() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Reset Meals'),
+          content: Text('Are you sure you want to reset all meals?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _mealService.resetMeals().then((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Meals reset successfully.'),
+                    ),
+                  );
+                  setState(() {
+                    _customerListFuture = _getCustomers();
+                  });
+                }).catchError((error) {
+                  print('Error resetting meals: $error');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed to reset meals. Please try again.'),
+                    ),
+                  );
+                });
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Reset'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     _breakfastController.dispose();
@@ -72,131 +115,139 @@ class _MealTableState extends State<MealTable> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Customer>>(
-      future: _customerListFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error}");
-        } else {
-          final customers = snapshot.data!;
-          return ListView.builder(
-            itemCount: customers.length,
-            itemBuilder: (context, index) {
-              final customer = customers[index];
-              return Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-                child: ExpansionTileCard(
-                  colorCurve: Curves.easeIn,
-                  baseColor: Color(0xff282D3B),
-                  expandedColor: Colors.black,
-                  elevation: 2,
-                  title: Text(
-                    customer.username,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  children: [
-                    Divider(thickness: 1.0, height: 1.0, color: Colors.white),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Age: ${customer.age}',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              controller: _breakfastController,
-                              style: TextStyle(
-                                  color: Colors.white), // Set text color
-                              decoration: InputDecoration(
-                                labelText: 'Breakfast',
-                                labelStyle: TextStyle(color: Colors.white),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter breakfast';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              controller: _lunchController,
-                              style: TextStyle(
-                                  color: Colors.white), // Set text color
-                              decoration: InputDecoration(
-                                labelText: 'Lunch',
-                                labelStyle: TextStyle(color: Colors.white),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter lunch';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              controller: _dinnerController,
-                              style: TextStyle(
-                                  color: Colors.white), // Set text color
-                              decoration: InputDecoration(
-                                labelText: 'Dinner',
-                                labelStyle: TextStyle(color: Colors.white),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter dinner';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            ElevatedButton(
-                              onPressed: () => _submitMeals(customer.uid),
-                              child: Text('Submit Meals'),
-                            ),
-                          ],
-                        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Meal Table'),
+      ),
+      body: FutureBuilder<List<Customer>>(
+        future: _customerListFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          } else {
+            final customers = snapshot.data!;
+            return ListView.builder(
+              itemCount: customers.length,
+              itemBuilder: (context, index) {
+                final customer = customers[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                  child: ExpansionTileCard(
+                    colorCurve: Curves.easeIn,
+                    baseColor: Color(0xff282D3B),
+                    expandedColor: Colors.black,
+                    elevation: 2,
+                    title: Text(
+                      customer.username,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
-          );
-        }
-      },
+                    children: [
+                      Divider(thickness: 1.0, height: 1.0, color: Colors.white),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Age: ${customer.age}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              TextFormField(
+                                controller: _breakfastController,
+                                style: TextStyle(
+                                    color: Colors.white), // Set text color
+                                decoration: InputDecoration(
+                                  labelText: 'Breakfast',
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter breakfast';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: 10),
+                              TextFormField(
+                                controller: _lunchController,
+                                style: TextStyle(
+                                    color: Colors.white), // Set text color
+                                decoration: InputDecoration(
+                                  labelText: 'Lunch',
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter lunch';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: 10),
+                              TextFormField(
+                                controller: _dinnerController,
+                                style: TextStyle(
+                                    color: Colors.white), // Set text color
+                                decoration: InputDecoration(
+                                  labelText: 'Dinner',
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter dinner';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: 10),
+                              ElevatedButton(
+                                onPressed: () => _submitMeals(customer.uid),
+                                child: Text('Submit Meals'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _resetMeals,
+        child: Icon(Icons.delete),
+      ),
     );
   }
 }
